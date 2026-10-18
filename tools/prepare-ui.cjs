@@ -1,0 +1,14 @@
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..'),assets=path.join(root,'app/src/main/assets');
+const prototype=fs.readFileSync(path.join(root,'design.html'),'utf8');
+const styles=[...prototype.matchAll(/<style>([\s\S]*?)<\/style>/g)].map(m=>m[1]).join('\n');
+let core=prototype.match(/<script>([\s\S]*?)<\/script>/)[1];
+core=core.slice(0,core.indexOf("document.addEventListener('click'"));
+core=core.replace(/const tracks=\[[\s\S]*?\n\];/,'const tracks=[];');
+core=core.replace(/setInterval\(\(\)=>\{if\(!document.hidden\)glitchSplash\(document.querySelector\('#splashPhone \.splash'\)\)\},2800\);/,'');
+fs.mkdirSync(assets,{recursive:true});
+fs.writeFileSync(path.join(assets,'ui.css'),styles+'\n'+fs.readFileSync(path.join(__dirname,'runtime.css'),'utf8'));
+fs.writeFileSync(path.join(assets,'ui-core.js'),core);
+fs.copyFileSync(path.join(__dirname,'runtime.js'),path.join(assets,'runtime.js'));
+fs.writeFileSync(path.join(assets,'index.html'),`<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="default-src 'none';script-src 'self';style-src 'self' 'unsafe-inline';img-src 'self' data: https:;font-src 'self';connect-src 'none';frame-src 'none';base-uri 'none';form-action 'none'"><title>MaxMusic</title><link rel="stylesheet" href="ui.css"></head><body class="solo runtime-loading"><div class="page"><div class="screens"><section class="screen selectedsolo"><div class="phone" id="libraryPhone"></div></section></div></div><script src="ui-core.js"></script><script src="runtime.js"></script></body></html>`);
+console.log('MaxMusic Android UI prepared');

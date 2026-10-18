@@ -1,0 +1,37 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'com.saturn.maxmusic'
+    compileSdk 35
+    buildToolsVersion '35.0.1'
+    defaultConfig { applicationId 'com.saturn.maxmusic'; minSdk 29; targetSdk 35; versionCode 2; versionName '0.1.1'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    signingConfigs {
+        release {
+            if (System.getenv('MAXMUSIC_KEYSTORE')) {
+                storeFile file(System.getenv('MAXMUSIC_KEYSTORE'))
+                storeType 'PKCS12'
+                storePassword System.getenv('MAXMUSIC_STORE_PASSWORD')
+                keyAlias 'maxmusic'
+                keyPassword System.getenv('MAXMUSIC_STORE_PASSWORD')
+            }
+        }
+    }
+    buildTypes { release { debuggable false; minifyEnabled false; if (System.getenv('MAXMUSIC_KEYSTORE')) { signingConfig signingConfigs.release } } }
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.all {
+            systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+            if (System.getenv('MAXMUSIC_MAVEN_CACHE')) { systemProperty 'maven.repo.local', System.getenv('MAXMUSIC_MAVEN_CACHE') }
+        }
+    }
+    lint { abortOnError true; disable 'ObsoleteSdkInt' }
+}
+dependencies {
+    implementation 'androidx.media3:media3-exoplayer:1.8.0'
+    implementation 'androidx.media3:media3-exoplayer-hls:1.8.0'
+    implementation 'androidx.media3:media3-session:1.8.0'
+    implementation 'androidx.media3:media3-database:1.8.0'
+    implementation 'androidx.webkit:webkit:1.12.1'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+}

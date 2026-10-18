@@ -1,0 +1,14 @@
+.gradle/
+build/
+app/build/
+local.properties
+*.jks
+*.keystore
+signing.properties
+*.p12
+*.pfx
+*.dpapi
+*signing-backup*
+MaxMusic-private/
+.env
+.env.*

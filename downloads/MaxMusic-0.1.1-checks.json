@@ -1,0 +1,22 @@
+{
+  "version": "0.1.1",
+  "versionCode": 2,
+  "applicationId": "com.saturn.maxmusic",
+  "minSdk": 29,
+  "targetSdk": 35,
+  "debuggable": false,
+  "apkSha256": "77E785703067F31E8871AC225FEAC808F87B89300BE579317A5D6D58BDB2DACC",
+  "certificateSha256": "B08850194E55CA28A98A75785D0B7F6A523A7B473E3002E8A2E246D8B3ADD993",
+  "releaseUnitTests": 7,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "lintErrors": 0,
+  "lintWarnings": 10,
+  "zipAlignmentVerified": true,
+  "physicalPhoneTested": false,
+  "vkAccountAndAudiblePlaybackTested": false,
+  "publicSourceSecretScanPassed": true,
+  "additionalCleanupMB": 52.5,
+  "temporaryBuildDirectoriesRemoved": true
+}
