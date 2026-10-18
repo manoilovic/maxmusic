@@ -38,7 +38,7 @@ final class AppGraph {
         StandaloneDatabaseProvider db=new StandaloneDatabaseProvider(c);
         SimpleCache offline=new SimpleCache(new File(c.getFilesDir(),"offline"),new NoOpCacheEvictor(),db);
         SimpleCache streaming=new SimpleCache(new File(c.getCacheDir(),"stream"),new LeastRecentlyUsedCacheEvictor(96L*1024*1024),db);
-        DefaultHttpDataSource.Factory http=new DefaultHttpDataSource.Factory().setUserAgent("MaxMusic/0.1.1").setConnectTimeoutMs(18000).setReadTimeoutMs(25000);
+        DefaultHttpDataSource.Factory http=new DefaultHttpDataSource.Factory().setUserAgent("MaxMusic/0.1.2").setConnectTimeoutMs(18000).setReadTimeoutMs(25000);
         DefaultDataSource.Factory source=new DefaultDataSource.Factory(c,http);
         CacheDataSource.Factory downloadSource=new CacheDataSource.Factory().setCache(offline).setUpstreamDataSourceFactory(source).setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR);
         CacheDataSource.Factory streamingSource=new CacheDataSource.Factory().setCache(streaming).setUpstreamDataSourceFactory(source).setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR);

@@ -12,3 +12,7 @@ signing.properties
 MaxMusic-private/
 .env
 .env.*
+
+node_modules/
+ui-checks.json
+package-lock.json

@@ -3,7 +3,7 @@ android {
     namespace 'com.saturn.maxmusic'
     compileSdk 35
     buildToolsVersion '35.0.1'
-    defaultConfig { applicationId 'com.saturn.maxmusic'; minSdk 29; targetSdk 35; versionCode 2; versionName '0.1.1'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
+    defaultConfig { applicationId 'com.saturn.maxmusic'; minSdk 29; targetSdk 35; versionCode 3; versionName '0.1.2'; testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner' }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
     signingConfigs {
         release {
@@ -27,6 +27,7 @@ android {
     lint { abortOnError true; disable 'ObsoleteSdkInt' }
 }
 dependencies {
+    implementation 'androidx.core:core:1.13.1'
     implementation 'androidx.media3:media3-exoplayer:1.8.0'
     implementation 'androidx.media3:media3-exoplayer-hls:1.8.0'
     implementation 'androidx.media3:media3-session:1.8.0'

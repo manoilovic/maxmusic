@@ -1,0 +1,130 @@
+{
+  "version": "0.1.2",
+  "versionCode": 3,
+  "applicationId": "com.saturn.maxmusic",
+  "minSdk": 29,
+  "targetSdk": 35,
+  "debuggable": false,
+  "apkSha256": "5A0314EA0DD9D8D21F407A69D69D237804BD748AAFA378726F25E5374DABA278",
+  "certificateSha256": "B08850194E55CA28A98A75785D0B7F6A523A7B473E3002E8A2E246D8B3ADD993",
+  "releaseUnitTests": 11,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "lintErrors": 0,
+  "lintWarnings": 11,
+  "zipAlignmentVerified": true,
+  "apkAssetsMatchSource": true,
+  "physicalPhoneTested": false,
+  "uiRegression": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "splash survives bootstrap and renders logo for 300 ms after native frame",
+        "durationMs": 304.8999999985099
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "library",
+        "width": 393,
+        "height": 780
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "search",
+        "width": 393,
+        "height": 780
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "downloads",
+        "width": 393,
+        "height": 780
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "settings",
+        "width": 393,
+        "height": 780
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "library",
+        "width": 360,
+        "height": 640
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "search",
+        "width": 360,
+        "height": 640
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "downloads",
+        "width": 360,
+        "height": 640
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "settings",
+        "width": 360,
+        "height": 640
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "library",
+        "width": 412,
+        "height": 875
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "search",
+        "width": 412,
+        "height": 875
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "downloads",
+        "width": 412,
+        "height": 875
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "settings",
+        "width": 412,
+        "height": 875
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "library",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "search",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "downloads",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "check": "only content scrolls; no bottom gap",
+        "view": "settings",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "check": "player remains within window when keyboard or small window reduces height"
+      }
+    ],
+    "errors": [],
+    "scope": "Chromium UI with mocked native bridge, not an Android device test"
+  },
+  "scope": "Unit tests on Robolectric API 29 and 35; UI in Chromium with simulated native bridge. User recording used to diagnose original issues; updated APK not tested on a physical phone."
+}

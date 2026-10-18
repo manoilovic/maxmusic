@@ -37,6 +37,9 @@ import org.json.JSONObject;
 @UnstableApi
 public final class MainActivity extends Activity {
     private WebView web;
+    private FrameLayout root;
+    private boolean splashFrameReady;
+    private Runnable removeSystemSplash;
     private AppGraph graph;
     private MediaController controller;
     private ListenableFuture<MediaController> future;
@@ -44,10 +47,10 @@ public final class MainActivity extends Activity {
     private boolean resumed,ready;
     private final Runnable tick=new Runnable(){public void run(){if(resumed){sendState();handler.postDelayed(this,700);}}};
     @Override public void onCreate(Bundle saved){
-        super.onCreate(saved);graph=AppGraph.get(this);FrameLayout root=new FrameLayout(this);root.setBackgroundColor(Color.rgb(11,13,17));
-        if(Build.VERSION.SDK_INT>=31)getSplashScreen().setOnExitAnimationListener(view->view.remove());
-        root.setOnApplyWindowInsetsListener((v,insets)->{v.setPadding(insets.getSystemWindowInsetLeft(),insets.getSystemWindowInsetTop(),insets.getSystemWindowInsetRight(),insets.getSystemWindowInsetBottom());return insets;});
-        web=new WebView(this);web.setBackgroundColor(Color.rgb(11,13,17));
+        super.onCreate(saved);graph=AppGraph.get(this);root=new FrameLayout(this);
+        if(Build.VERSION.SDK_INT>=31)getSplashScreen().setOnExitAnimationListener(view->{if(splashFrameReady)view.remove();else removeSystemSplash=view::remove;});
+        AppWindow.configure(this,root);
+        web=new WebView(this);web.setBackgroundColor(Color.rgb(11,13,17));web.setOverScrollMode(android.view.View.OVER_SCROLL_NEVER);web.setVerticalScrollBarEnabled(false);web.setHorizontalScrollBarEnabled(false);
         WebSettings settings=web.getSettings();settings.setJavaScriptEnabled(true);settings.setDomStorageEnabled(true);settings.setAllowFileAccess(false);settings.setAllowContentAccess(false);settings.setMediaPlaybackRequiresUserGesture(true);settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         graph.vk.userAgent=settings.getUserAgentString();
         WebViewAssetLoader assets=new WebViewAssetLoader.Builder().addPathHandler("/assets/",new WebViewAssetLoader.AssetsPathHandler(this)).build();
@@ -55,8 +58,8 @@ public final class MainActivity extends Activity {
             @Override public WebResourceResponse shouldInterceptRequest(WebView view,WebResourceRequest request){return assets.shouldInterceptRequest(request.getUrl());}
             @Override public boolean shouldOverrideUrlLoading(WebView view,WebResourceRequest request){return !trusted(request.getUrl().toString());}
         });
-        web.addJavascriptInterface(new Bridge(),"Android");root.addView(web,new FrameLayout.LayoutParams(-1,-1));setContentView(root);
-        web.loadUrl("https://appassets.androidplatform.net/assets/index.html?solo=library&capture");
+        web.addJavascriptInterface(new Bridge(),"Android");root.addView(web,new FrameLayout.LayoutParams(-1,-1));setContentView(root);root.requestApplyInsets();
+        web.loadUrl("https://appassets.androidplatform.net/assets/index.html");
         future=new MediaController.Builder(this,new SessionToken(this,new ComponentName(this,PlaybackService.class))).buildAsync();
         future.addListener(()->{try{controller=future.get();controller.addListener(new Player.Listener(){@Override public void onEvents(Player p,Player.Events e){sendState();}});sendState();}catch(Exception ignored){}},getMainExecutor());
     }
@@ -96,10 +99,11 @@ public final class MainActivity extends Activity {
             if(raw==null||raw.length()>65536)return;
             handler.post(()->{if(!trusted(web.getUrl()))return;try{
                 JSONObject request=new JSONObject(raw);String id=request.getString("request"),action=request.getString("action");
+                if(action.equals("splashFrame")){web.postVisualStateCallback(0,new WebView.VisualStateCallback(){@Override public void onComplete(long requestId){if(web==null||isFinishing()||isDestroyed())return;splashFrameReady=true;if(removeSystemSplash!=null){removeSystemSplash.run();removeSystemSplash=null;}web.postOnAnimation(()->reply(id,VkClient.paramsQuiet("ok",true),null));}});return;}
                 if(action.equals("ready")){ready=true;reply(id,VkClient.params("ok",true),null);sendState();return;}
                 if(action.equals("login")){startActivityForResult(new Intent(MainActivity.this,LoginActivity.class),91);reply(id,VkClient.params("opened",true),null);return;}
                 if(action.equals("import")){Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("audio/*").addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);startActivityForResult(intent,92);reply(id,VkClient.params("opened",true),null);return;}
-                if(action.equals("theme")){boolean light=request.optBoolean("light");int color=Color.parseColor(light?"#F4F5F8":"#0B0D11");getWindow().setStatusBarColor(color);getWindow().setNavigationBarColor(color);int flags=light?android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR|android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR:0;web.setSystemUiVisibility(flags);reply(id,VkClient.params("ok",true),null);return;}
+                if(action.equals("theme")){boolean light=request.optBoolean("light");AppWindow.applyTheme(MainActivity.this,root,light);web.setBackgroundColor(Color.parseColor(light?"#F4F5F8":"#0B0D11"));reply(id,VkClient.params("ok",true),null);return;}
                 if(action.equals("notifications")){if(Build.VERSION.SDK_INT>=33&&checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)!=android.content.pm.PackageManager.PERMISSION_GRANTED)requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},1);reply(id,VkClient.params("ok",true),null);return;}
                 if(action.equals("clearCache")){web.clearCache(true);reply(id,VkClient.params("ok",true),null);return;}
                 if(action.equals("exit")){moveTaskToBack(true);reply(id,VkClient.params("ok",true),null);return;}

@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=Gevork Saturn, OU=MaxMusic, O=SATURN
+Signer #1 certificate SHA-256 digest: b08850194e55ca28a98a75785d0b7f6a523a7b473e3002e8a2e246d8b3add993
+Signer #1 certificate SHA-1 digest: 1a609464d26566122f65c21c270631b181d25779
+Signer #1 certificate MD5 digest: 0e5fcf84ad6512c5667c6000d34e4c16
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 3072
+Signer #1 public key SHA-256 digest: 911fad859d66593e05cde13a4de89145a738c3a005e57dd784137af26a7bb50e
+Signer #1 public key SHA-1 digest: ee04570a9a748000f04de5559e57e61c05de6cd2
+Signer #1 public key MD5 digest: 90afee455b3bf7c60184ba5821191d25
